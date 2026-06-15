@@ -1,13 +1,14 @@
 "use client";
 
-import { products } from "@/lib/mockProducts";
 import ProductCard from "./ProductCard";
+import { Product } from "@/lib/types";
 
 type Props = {
-  onBuy: (id: number) => void;
+    products: Product[];
+    onBuy: (id:number) => void;
 };
 
-export default function ProductList({ onBuy }: Props) {
+export default function ProductList({ products, onBuy }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {products.map((p) => (
