@@ -7,10 +7,12 @@ import ImageUpload from "./ImageUpload";
 import QuantitySlider from "./QuantitySlider";
 import CheckboxGroup from "./CheckboxGroup";
 import ProductSelect from "./ProductSelect";
+import { useRouter } from "next/navigation";
 
 import {
     checkoutFields,
 } from "@/lib/formConfig";
+import { validateName, validatePhone } from "@/utils/validation";
 
 type Props = {
     product: Product;
@@ -37,6 +39,8 @@ export default function CheckoutForm({
             logo: null as File | null,
         });
 
+    const router = useRouter();
+
     const [errors, setErrors] =
     useState<Record<string, string>>({});
 
@@ -56,33 +60,25 @@ export default function CheckoutForm({
 
         const newErrors: Record<string,string> = {};
 
-        if (
-            !formData.customerName.trim()
-        ) {
-            newErrors.customerName =
-                "Name is required";
-        }
+        newErrors.customerName = validateName(formData.customerName);
+        newErrors.phone = validatePhone(formData.phone);
 
-        if (
-            !formData.phone.trim()
-        ) {
-            newErrors.phone =
-                "Phone is required";
-        }
+        // remove empty errors
+        Object.keys(newErrors).forEach(
+            (key) => !newErrors[key] && delete newErrors[key]
+        );
 
         setErrors(newErrors);
 
-        if (
-            newErrors.customerName ||
-            newErrors.phone
-        ) {
-            return;
-        }
+        if (Object.keys(newErrors).length > 0) return;
 
         const payload = {
             productId: product.id,
             ...formData,
         };
+        router.push(
+            `/order-success?product=${product.name}`
+        );
 
         console.log(payload);
 
@@ -115,11 +111,7 @@ export default function CheckoutForm({
                                             )
                                         }
                                         placeholder={field.label}
-                                        className="
-                                            border
-                                            p-2
-                                            w-full
-                                        "
+                                        className="border p-2 w-full"
                                     />
 
                                     {
@@ -141,6 +133,9 @@ export default function CheckoutForm({
                                 <ProductSelect
                                     key={ field.name }
                                     value={ formData.color }
+                                     options={
+                                        field.options || []
+                                    }
                                     onChange={(value) =>
                                        handleChange(
                                             field.name,

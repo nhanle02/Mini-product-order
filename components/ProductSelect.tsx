@@ -1,19 +1,17 @@
 "use client";
 
+
 type Props = {
     value: string;
-    onChange: (value: string) => void;
+    options: string[];
+    onChange: (
+        value: string
+    ) => void;
 };
-
-const colors = [
-    "Black",
-    "White",
-    "Blue",
-    "Red",
-];
 
 export default function ProductSelect({
     value,
+    options,
     onChange,
 }: Props) {
     return (
@@ -29,15 +27,19 @@ export default function ProductSelect({
                 }
                 className="border p-2 w-full"
             >
-                {colors.map((color) => (
-                    <option
-                        key={color}
-                        value={color}
-                    >
-                        {color}
-                    </option>
-                ))}
-            </select>
+
+            {options.map((option) => (
+
+                <option
+                    key={option}
+                    value={option}
+                >
+                    {option}
+                </option>
+
+            ))}
+
+        </select>
         </div>
     );
 }
