@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/lib/types";
+import { FieldConfig, Product } from "@/lib/types";
 import { useState } from "react";
 
 import ImageUpload from "./ImageUpload";
@@ -9,13 +9,11 @@ import CheckboxGroup from "./CheckboxGroup";
 import ProductSelect from "./ProductSelect";
 import { useRouter } from "next/navigation";
 
-import {
-    checkoutFields,
-} from "@/lib/formConfig";
 import { validateName, validatePhone } from "@/utils/validation";
 
 type Props = {
     product: Product;
+    fields: FieldConfig[];
 };
 
 type FormValue =
@@ -27,6 +25,7 @@ type FormValue =
 
 export default function CheckoutForm({
     product,
+    fields,
 }: Props) {
 
     const [formData, setFormData] =
@@ -88,7 +87,7 @@ export default function CheckoutForm({
 
         <div className="space-y-4">
 
-            {checkoutFields.map(
+            {fields.map(
                 (field) => {
 
                     switch (
