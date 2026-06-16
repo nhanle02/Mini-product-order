@@ -6,6 +6,12 @@ export type Product = {
   description: string;
 };
 
+export type ProductResponse = {
+    success: boolean;
+    data?: Product;
+    message?: string;
+};
+
 export type FieldType =
     | "text"
     | "checkbox"

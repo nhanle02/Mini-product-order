@@ -1,4 +1,4 @@
-import { Product } from "./types";
+import { Product, ProductResponse } from "./types";
 
 type ApiResponse<T> = {
     success: boolean;
@@ -19,4 +19,17 @@ export async function getProducts():
         await response.json();
 
     return json;
+}
+
+export async function getProduct(
+    id: number
+): Promise<ProductResponse> {
+
+    const response =
+        await fetch(
+            `/api/products/${id}`
+        );
+
+    return response.json();
+
 }
