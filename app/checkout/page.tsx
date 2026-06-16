@@ -1,9 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { products } from "@/lib/mockProducts";
 import CheckoutForm from "@/components/CheckoutForm";
 import Image from "next/image"; 
+import { useEffect, useState } from "react";
+import { Product } from "@/lib/types";
+import { getProduct } from "@/lib/fakeApi";
 
 
 export default function CheckoutPage() {
@@ -14,14 +16,38 @@ export default function CheckoutPage() {
         searchParams.get("productId")
     );
 
-    const product = products.find(
-        (item) => item.id === productId
-    );
+    const [product, setProduct] =
+        useState<Product | null>(
+            null
+        );
+
+    useEffect(() => {
+
+        async function load() {
+
+            const result =
+                await getProduct(productId);    
+
+            if (
+                result.success
+            ) {
+
+                setProduct(
+                    result.data ?? null
+                );
+
+            }
+
+        }
+
+        load();
+
+    }, [productId]);
 
     if (!product) {
         return (
             <div className="p-6">
-                Product not found
+                Loading...
             </div>
         );
     }
