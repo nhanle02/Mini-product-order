@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Product } from "@/lib/types";
 import { getProduct } from "@/lib/fakeApi";
+import { checkoutFields } from "@/lib/formConfig";
 
 
 export default function CheckoutPage() {
@@ -81,6 +82,7 @@ export default function CheckoutPage() {
             {/* Form */}
             <CheckoutForm
                 product={product}
+                fields={checkoutFields}
             />
 
         </div>
